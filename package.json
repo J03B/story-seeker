@@ -1,6 +1,6 @@
 {
   "name": "googlebooks-app",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "server/server.js",
   "scripts": {
@@ -11,7 +11,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "concurrently": "^5.1.0"
   }
