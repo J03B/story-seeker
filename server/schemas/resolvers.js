@@ -1,24 +1,35 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Book } = require('../models');
+const { User } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
 
     // GET request queries to retrieve user and book information
     Query: {
-        users: async () => {
-            return User.find().populate('books');
+        // REFACTOR TO USE THE me QUERY
+        me: async (parent, args, context) => {
+            if (context.user) {
+                const userData = await User.findOne({ _id: context.user._id }).select(
+                  '-__v -password'
+                );
+                return userData;
+            }
+            throw new AuthenticationError('Not logged in.');
         },
-        user: async (parent, { username }) => {
-            return User.findOne({ username }).populate('books');
-        },
-        books: async (parent, { username }) => {
-            const params = username ? { username } : {};
-            return Book.find(params);
-        },
-        book: async (parent, { bookId }) => {
-            return Book.findOne({ _id: bookId });
-        },
+        
+        // users: async () => {
+        //     return User.find().populate('books');
+        // },
+        // user: async (parent, { username }) => {
+        //     return User.findOne({ username }).populate('books');
+        // },
+        // books: async (parent, { username }) => {
+        //     const params = username ? { username } : {};
+        //     return Book.find(params);
+        // },
+        // book: async (parent, { bookId }) => {
+        //     return Book.findOne({ _id: bookId });
+        // },
     },
 
     // POST requests to add users, start login sessions, and books
@@ -47,17 +58,13 @@ const resolvers = {
         },
         addBook: async (parent, { description }, context) => {
             if (context.user) {
-                const book = await Book.create({
-                    description,
-                    author: context.user.username,
-                });
-
-                await User.findOneAndUpdate(
+                const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { books: book._id } }
+                    { $push: { books: description } },
+                    { new: true, runValidators: true }
                 );
 
-                return book;
+                return updatedUser;
             }
             throw new AuthenticationError('You need to be logged in!');
         },
@@ -65,17 +72,13 @@ const resolvers = {
         // DELETE request to remove books from the User's favorites list
         removeBook: async (parent, { bookId }, context) => {
             if (context.user) {
-                const book = await Book.findOneAndDelete({
-                    _id: bookId,
-                    author: context.user.username,
-                });
-
-                await User.findOneAndUpdate(
+                const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $pull: { books: book._id } }
+                    { $pull: { books: { bookId: bookId } } },
+                    { new: true }
                 );
 
-                return book;
+                return updatedUser;
             }
             throw new AuthenticationError('You need to be logged in!');
         },
