@@ -7,10 +7,10 @@ const resolvers = {
     // GET request queries to retrieve user and book information
     Query: {
         users: async () => {
-            return User.find().populate('savedBooks');
+            return User.find().populate('books');
         },
         user: async (parent, { username }) => {
-            return User.findOne({ username }).populate('savedBooks');
+            return User.findOne({ username }).populate('books');
         },
         books: async (parent, { username }) => {
             const params = username ? { username } : {};
