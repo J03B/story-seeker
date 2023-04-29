@@ -31,15 +31,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Replace the routes using with redirector to prd build html file
-// app.use(routes);
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
 // Replacing the old express listening port with the new Apollo Server GraphQL schema
-// db.once('open', () => {
-//   app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
-// });
 const storySeekerApolloServer = async (typeDefs, resolvers) => {
   await server.start();
   server.applyMiddleware({ app });

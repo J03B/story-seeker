@@ -6,7 +6,7 @@ const expiration = '2h';
 
 module.exports = {
   // function for our authenticated routes
-  authMiddleware: function (req, res, next) {
+  authMiddleware: function ({ req }) {
     // allows token to be sent via  req.query or headers
     // Including an option to be received by the request's body's token
     let token = req.body.token || req.query.token || req.headers.authorization;
@@ -17,9 +17,6 @@ module.exports = {
     }
 
     // Replace previous RESTful API response with new version
-    // if (!token) {
-    //   return res.status(400).json({ message: 'You have no token!' });
-    // }
     if (!token) {
       return req;
     }

@@ -13,7 +13,7 @@ import Auth from '../utils/auth';
 // import { saveBook, searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 // Refactoring to add GraphQL
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import { SAVE_BOOK } from '../utils/mutations';
 
 const SearchBooks = () => {
@@ -21,12 +21,11 @@ const SearchBooks = () => {
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
-
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
   // REFACTOR to set up useEffect hook to save `savedBookIds` list to localStorage using GraphQL
-  const [saveBook, { error }] = useMutation(SAVE_BOOK);
+  const [ saveBook ] = useMutation(SAVE_BOOK);
 
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
   useEffect(() => {
@@ -81,6 +80,7 @@ const SearchBooks = () => {
       const { data } = await saveBook({
         variables: { newBook: { ...bookToSave } },
       });
+      console.log( data );
 
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {

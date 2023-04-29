@@ -16,20 +16,6 @@ const resolvers = {
             }
             throw new AuthenticationError('Not logged in.');
         },
-        
-        // users: async () => {
-        //     return User.find().populate('books');
-        // },
-        // user: async (parent, { username }) => {
-        //     return User.findOne({ username }).populate('books');
-        // },
-        // books: async (parent, { username }) => {
-        //     const params = username ? { username } : {};
-        //     return Book.find(params);
-        // },
-        // book: async (parent, { bookId }) => {
-        //     return Book.findOne({ _id: bookId });
-        // },
     },
 
     // POST requests to add users, start login sessions, and books
@@ -56,11 +42,11 @@ const resolvers = {
 
             return { token, user };
         },
-        addBook: async (parent, { description }, context) => {
+        saveBook: async (parent, { newBook }, context) => {
             if (context.user) {
-                const updatedUser = await User.findOneAndUpdate(
+                const updatedUser = await User.findByIdAndUpdate(
                     { _id: context.user._id },
-                    { $push: { books: description } },
+                    { $push: { savedBooks: newBook } },
                     { new: true, runValidators: true }
                 );
 
@@ -74,7 +60,7 @@ const resolvers = {
             if (context.user) {
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $pull: { books: { bookId: bookId } } },
+                    { $pull: { savedBooks: { bookId: bookId } } },
                     { new: true }
                 );
 

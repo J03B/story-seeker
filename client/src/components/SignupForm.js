@@ -11,7 +11,7 @@ const SignupForm = () => {
   // set initial form state
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
   // ADD MUTATION for form data above
-  const [addUser, { error }] = useMutation(ADD_USER) ; // 
+  const [ addUser ] = useMutation(ADD_USER);
   // set state for form validation
   const [validated] = useState(false);
   // set state for alert
