@@ -4,7 +4,7 @@
 
 ## Final Deployed Webpage
 
-[Story Seeker Deployed Webpage (powered by Heroku)](https://github.com/J03B/story-seeker)
+[Story Seeker Deployed Webpage (powered by Heroku)](https://story-seek.herokuapp.com/)
 
 ## Table of Contents
 
@@ -22,11 +22,8 @@ The goal of this project is to provide a more performant search engine for books
 
 ### Mock Up
 
-Searching
-![A gif of the portfolio site fully rendered and completed showing the searching capability of the site.](./assets/files/searching.gif)
-
-Saving a Book as a Favorite and Deleting
-![A gif of the portfolio site fully rendered and completed showing favoriting and deleting of the site.](./assets/files/fav_and_del.gif)
+Searching, saving, deleting, logging out
+![A gif of the portfolio site fully rendered and completed showing the searching capability of the site.](./assets/searching.gif)
 
 ### Task Completed
 
